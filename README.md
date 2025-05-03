@@ -1,12 +1,13 @@
 # R_Podstawy
-materiały kursowe do szkolenia w R
+
+Materiały kursowe do szkolenia w R w ramach IDUB UW.
 
 # Szczegółowe cele kursu:
 
 Słuchacze:
 
 1. W zakresie podstaw korzystania z R, Rstudio i bibliotek tidyverse:
- -nauczą się otwierać projekty i pliki RMarkdown, 
+- nauczą się otwierać projekty i pliki RMarkdown, 
 - uruchamiać kod w RMarkdown, 
 - instalować oraz wczytywać biblioteki,
 - tworzyć i wyświetlać obiekty, 
