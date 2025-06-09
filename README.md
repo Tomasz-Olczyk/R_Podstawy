@@ -29,7 +29,7 @@ Słuchacze:
 facet_wrap, dodawania etykiet funkcją labs( ) 
 - oraz zmiany motywu wykresu przy użyciu funkcji theme_*.
 
-3. W zakresie przetwazania danych:
+3. W zakresie przetwarzania danych:
 - nauczą się przekształcać dane szerokie na długie, 
 - wybierać kolumny za pomocą funkcji select, 
 - filtrować wiersze funkcją filter, 
