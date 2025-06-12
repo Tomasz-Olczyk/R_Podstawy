@@ -1,13 +1,15 @@
 ---
-title: "Podstawy ggplot"
+title: "Podstawy ggplot - moduł 2"
 output: html_document
 author: "Tomasz Olczyk"
+date: "`r Sys.Date()`"
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE)
 ```
 
 ## Przypomnienie i dokończenie z poprzednich zajęć:
@@ -26,20 +28,22 @@ library(gapminder)
 library(here)
 library(openxlsx)
 library(readxl)
+library(ggthemes)
 
 
 ```
 
-### Wczytywywanie danych
 
+## Powtórzenie z modułu 1:
 
+### Wczytywywanie danych 
 
 #### Dane csv
 
 Z użyciem here::here by uniknąć problemów z relatywnymi linkami
 
 ```{r}
-panteon <- read_csv(here("podstawy", "panteon_s.csv"))
+panteon <- read_csv(here("dane", "panteon_s.csv"))
 ```
 
 
@@ -57,49 +61,18 @@ Do R można wczytać wiele różncych formatów plików (m. in. Excel, SPSS, Sta
 
 
 
-Dane xlsx są problematyczne:
+Jak już wiemy dane xlsx są problematyczne:
+
 
 ```{r}
 
-podatki <- read_excel(
-  "./podstawy/Chapter14TablesFigures.xlsx",
+podatki <- read_excel(here("dane", "Chapter14TablesFigures.xlsx"), 
   sheet = "TS14.1", #wybieramy arkusz z pliku
- )
-
-```
-
-```{r}
-
-podatki <- read_excel(
-  "./podstawy/Chapter14TablesFigures.xlsx", #uwaga musimy być we właściwym katalogu roboczym, żeby ta linia kodu zadziałała
-  sheet = "TS14.1", #wybieramy arkusz z pliku
-  skip = 3,
-  n_max = 114# usuwamy trzy pierwsze wiersze
+  skip = 3, # pomijamy trzy pierwsze wiersze
+  n_max = 114 # kończymy na 114 obserwacji
   )
 
 ```
-
-
-```{r}
-podatki <- select(podatki, 1:4)
-```
-
-
-```{r}
-podatki %>%
-  rename(rok = "...1" )
-```
-
-Lub z użyciem biblioteki here 
-
-```{r}
-podatki2 <- read_excel(here("podstawy", "Chapter14TablesFigures.xlsx"), #uwaga musimy być we właściwym katalogu roboczym, żeby ta linia kodu zadziałała
-  sheet = "TS14.1", #wybieramy arkusz z pliku
-  skip = 3 # usuwamy trzy pierwsze wiersze
-  )
-```
-
-
 
 
 #### Przywoływanie funkcji lub zbioru danych z konkretnej biblioteki operatorem ::
@@ -108,7 +81,7 @@ podatki2 <- read_excel(here("podstawy", "Chapter14TablesFigures.xlsx"), #uwaga m
 ggplot2::mpg
 ```
 
-uruchamianie dokumentacji na temat funkcji lub zbioru danych
+Uruchamianie dokumentacji na temat funkcji lub zbioru danych:
 
 
 ```{r}
@@ -129,7 +102,7 @@ Nazwa typu wykresu (dokładniej obiektu geometrycznegoe) w ggplot zaczyna się o
 
 Geometrię, podobnie jak inne warstwy dodajemy + 
 
-Funkcja generuje układ współrzędnych, pierwszym argumentem jest zbiór danych na podstawie którego tworzymy wykres:
+Funkcja ggplot() generuje układ współrzędnych, pierwszym argumentem jest zbiór danych na podstawie którego tworzymy wykres:
 
 ```{r}
 
@@ -141,7 +114,19 @@ ggplot(data = mpg)
 
 Wszystkie funkcje geometryczne przyjmują argument mapping, definiuje on sposób mapowania zmiennych ze zbioru danych
 
-Argument mapping zawsze wystepuje z funkcją aes().
+Argument mapping zawsze wystepuje z funkcją aes(). aes() łączy zmienną z elementem, który będzi widoczny na wykresie. Inaczej mówiąc mapowanie mówi które zmienne będą reprezentowane przez które elemenety wizualne.
+
+
+```{r}
+
+ggplot(mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() 
+
+```
+
+
+Kolejne geometrie to kolejne warstwy wykresu. 
+Kolejność warstw ma znaczenie
 
 
 ```{r, eval = FALSE}
@@ -157,16 +142,7 @@ ggplot(mpg,  (aes(x = cty,
 
 ```
 
-```{r}
-
-ggplot(mpg, mapping = aes(x = cty, y = hwy)) +
-  geom_point() +
-  geom_smooth()
-
-```
-
-
-Kolejność warstw ma znaczenie
+Mamy wiele różnych estetyk do wyboru dla każdej geometrii. Każda nowa estetyka generuje własną legendę.
 
 ```{r}
 
@@ -218,19 +194,6 @@ Funkcje fasetowe
 
 Fasetami (ang. facets) to wykresy podrzędne (panelowe, małych wielokrotnosci), prezentujące podzbiór danych. Do funkcjifasetowych należą facet_wrap i facet_grid. 
 
-Motywy 
-
-Motywami (ang. themes) to elementy wizualne wykresu niepowiązane z danymi. Należą do nich tytuły, marginesy, położenie spisów elementów czy  użyte czcionki. 
-
-Warstwa 
-
-Warstwa (ang. layer) to połączenie danych, map estetyki, obiektu geometrycznego, statysty i innych ustawień tworzących warstwę wizualną wykresu ggplot. 
-
-
-
-
-
-Można zmapować więcej zmiennych używając innych estetyk, np. koloru lub kształtu albo rozmiaru, przroczystości, 
 
 ```{r}
 ggplot(mpg, aes(x = cty, 
@@ -241,6 +204,19 @@ ggplot(mpg, aes(x = cty,
   facet_grid(manufacturer~cyl)
 
 ```
+
+
+Motywy 
+
+Motywami (ang. themes) to elementy wizualne wykresu niepowiązane z danymi. Należą do nich tytuły, marginesy, położenie spisów elementów czy  użyte czcionki. 
+
+Warstwa 
+
+Warstwa (ang. layer) to połączenie danych, map estetyki, obiektu geometrycznego, statysty i innych ustawień tworzących warstwę wizualną wykresu ggplot. 
+
+
+Można zmapować więcej zmiennych używając innych estetyk, np. koloru lub kształtu albo rozmiaru, przroczystości, 
+
 
 
 
@@ -305,6 +281,7 @@ ggplot(data = gapminder,
 ```
 
 Estetyki wiążą dane z elementami graficznymi dlatego jeśli chcemy ustalić elementy graficzne nie wiążąc ich z danymi musimy to zrobić poza funkcją aes()
+
 ```{r}
 ggplot(data = gapminder,
             mapping = aes(x = gdpPercap,
@@ -506,11 +483,13 @@ UWAGA MOŻE WYMAGAĆ INSTALACJI DODATKOWEJ BIBLIOTEKI
 polska <- map_data("world", region = 'Poland')
 ```
 
+Poniższy kod wybiera z danych Panteon, te które
 
 ```{r}
 pol <- subset(panteon, countryCode3 == "POL")
 ```
 
+Geometrie mogą przyjmować różne dane, co otwiera ciekawe możliwości:
 
 ```{r}
 
@@ -525,21 +504,8 @@ ggplot(map_data("world", region = 'Poland'),
 
 ```
 
-```{r}
-+
-  geom_point(data = polska, aes(x = LON, y = LAT, group = name))+
-  geom_label(data = subset(polska, LON >24), aes(label = name,
-                                x = LON, y = LAT, group = name)) +
-  coord_quickmap()
 
-
-```
-
-  geom_point(data = polska, aes(x = LON, y = LAT, group = name)) +
-  geom_label(data = polska, aes(x = LON, y = LAT, group = name, label = name)) +
-coord_quickmap()
-
-
+ 
 
 ```{r}
 
@@ -667,16 +633,7 @@ ggplot(data = mpg) +
 Weźmy dane panteon i stwórzmy wykres panelowy prezentujacy liczbę kobiet i mężczyzn z każdego kontynentu. Niech płci różnią się kolorem a każdy panel reprezentuje jeden kontynet.
  
  
-```{r}
 
-ggplot(panteon, aes(x =,
-                    y = ,
-                    fill = gender)) +
-  geom_bar() +
-facet_wrap(~continentName) +
-  theme(axis.ticks.x = element_blank())
-
-```
  
 ## Etykiety
 

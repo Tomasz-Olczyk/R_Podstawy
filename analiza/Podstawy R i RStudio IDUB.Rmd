@@ -1,5 +1,5 @@
 ---
-title: "Podstawy R i RStudio"
+title: "Podstawy R i RStudio - moduł 1"
 author: "Tomasz Olczyk"
 output:
   html_document:
@@ -54,14 +54,23 @@ Inaczej mówiąc R traktuje wszystkie polecenia literalnie.
 Będziemy popełniać błędy i będzie ich mnóstwo. Błędy pomagają nauczyć się programowania w R.
 
 Typowe błędy: 
-- niedomknięty nawias, 
+- niedomknięty nawias lub cudzysłów
+- brak przecinka między argumentami
 - niekompletne wyrażanie (+ w konsoli, kursor + Esc)
 - częsty błąd ggplot to + w niewłaściwm miejscu
 
-#### skróty klawiszowe
+#### przydatne skróty klawiszowe
 
-Ctrl+Alt+ I - nowy segment kodu w Windowsie
+Ctrl+Alt+ I = nowy segment kodu w Windowsie
 Cmd+Alt + I =   nowy segment kodu w Mac os
+
+Alt - = operator przypisania w Windows
+Opt - = operator przypisania w Mac os
+
+ctrl enter - uruchamia zaznaczony fragment kodu
+ctrl shift enter - uruchamia cały skrypt
+
+
 
 ## RStudio podstawwowe informacje
 
@@ -135,9 +144,7 @@ Wszystko jest obiektem:
 moje_liczby  <- c(1, 2, 3, 5, 25) # funkcja c() tworzy wektor czyli uporządkowaną kolekcję elementów jednego rodzaju
 ```
 
-Operator przypisania skróty:
--mac os: Opt + -
--Win: Alt + -
+
 
 Po przypisaniu i wykonaniu kodu obiekt pojawi się w przestrzeni roboczej: okno environment.
 
@@ -167,6 +174,11 @@ Argumenty zawsze oddzielone są przecinkami
 
 help(ggplot)
 
+```
+
+
+```{r}
+example(ggplot)
 ```
 
 ### Przykładowe funkcje
@@ -406,6 +418,7 @@ wektor <- 3:103
 
 ```
 
+Inaczej niż w Pythonie i wielu innych języków programowania R indeksuje od 1 a nie od zera
 
 ```{r}
 
@@ -419,7 +432,7 @@ wektor[1]
 
 ```
 
-
+Istniją gotowe wektory
 
 ```{r}
 
@@ -436,6 +449,7 @@ LETTERS[co_drugi]
 
 
 ```
+
 
 
 
@@ -480,6 +494,19 @@ Jak połączyć wektory nierównych długości w ramkę danych:
 
 str(ramka_danych)
 
+```
+
+
+
+Operator $ pozwala wybrać kolumnę z ramki danych
+
+```{r}
+ramka_danych$sondaż
+```
+
+
+```{r}
+ramka_danych$partie
 ```
 
 Prosty wykres w bazowym R:
@@ -758,6 +785,7 @@ library(openxlsx)
 podatki_2 <-read.xlsx(here::here("dane",  "Chapter14TablesFigures.xlsx") )
 ```
 
+Dlaczego pojawia się komunikat o błędzie?
 
 ```{r, eval = FALSE}
 read.xlsx(
@@ -797,7 +825,7 @@ getwd()
 
 Ustawianie katalogu roboczego
 
-```{r}
+```{r,  eval = FALSE}
 
 
 setwd() # argumentem jest ścieżka dostępu do katalogu roboczego w cudzysłowie
@@ -814,8 +842,7 @@ podatki_open <- openxlsx::read.xlsx("./dane/Chapter14TablesFigures.xlsx", #ście
                           sheet = "TS14.1",
                           startRow = 4,
                           rows = 1:118,
-                          cols = 1:5) %>%
-  rename(rok = "X1") 
+                          cols = 1:5) 
 ```
 
 
@@ -842,15 +869,23 @@ panteon_lokalnie <- read_csv(here("dane", "panteon_s.csv"))
 
 
 ```{r}
-plot(y =podatki_open$U.S.,
-     x = podatki_open$rok,
-     type = "s",
+plot(y = podatki_open$U.S.,
+     x = podatki_open$X1,
+     type = "l",
      col = "steelblue",
      ylim = c(0,1))
 
 lines(y =podatki_open$U.K.,
-     x = podatki_open$rok,
+     x = podatki_open$X1,
      col = "orange")
+```
+
+```{r}
+length(podatki_open$U.S.)
+```
+
+```{r}
+length(podatki_open$X1)
 ```
 
 
@@ -915,6 +950,11 @@ class(panteon$domain)
 
 table(panteon$gender)
 
+```
+
+
+```{r}
+table(panteon$domain)
 ```
 
 ## Zapisywanie danych
@@ -983,7 +1023,8 @@ Wykres słupkowy.
 
 
 ```
-2. wykres  słupkowy
+
+2. Wykres  słupkowy
 
 ```{r}
 
@@ -1278,7 +1319,7 @@ piąta_kolumna[4,]
 
 ```
 
-## Praca domowa do modułu 1:
+## Praca domowa 1 (do modułu 1):
 
 - tworzymy nowy projekt
 - umieszczamy w nim plik z danymi
@@ -1289,6 +1330,9 @@ wczytuje dane i rysuje na ich podstawie (dowolny) wykres
 - notujemy wszelkie problemy, pytania i trudności jakie pojawią się w tym procesie
 
 ## Gdzie szukać dodatkowych informacji:
+
+Informacje o pakietach R według dziedzin:
+[link](https://cran.r-project.org/web/views/)
 
 Plan minimum: 
 
