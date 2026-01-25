@@ -238,7 +238,7 @@ kobiety_pow_śr <- filter(panteon, gender == "Female",
 
 %in% stosujemy kiedy mamy zbiór warunków filtrujących
 
-x  %in% y - zostanie wybrany każdy wiersz, w którym x jest jedną z wartości w y
+x  %in% y - zostanie wybrany każdy wiiersz, w którym x jest jedną z wartości w y
  
 
 Wybierzmy osoby ze zbioru Panteon urodzone w czasie wojen światowych

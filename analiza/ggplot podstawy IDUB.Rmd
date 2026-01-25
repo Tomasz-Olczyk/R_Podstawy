@@ -668,7 +668,7 @@ wykres <- ggplot(data = mpg) +
 # Zapisywanie wykresów funkcją ggsave
 
 
-ggsave("my-plot.pdf") # > zapisue 6 x 3.71 cali
+ggsave("my-plot.pdf") # > zapisuje 6 x 3.71 cali
 
 
 ?ggsave # charakterystki wykresu w pliku docelowym i miejsce zapisania wykresu można ustalić

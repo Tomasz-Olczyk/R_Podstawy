@@ -34,7 +34,7 @@ Zadania:
 2. analiza wyników
 3. notatki
 
-Dlatego używamy RMakdown. Jest to czysto tekstowy dokument, który umożliwia robienie tych wszystkich rzeczy, w sposób reprodukowalny i zapisany w możliwie odporny sposób.
+Dlatego używamy RMarkdown. Jest to czysto tekstowy dokument, który umożliwia robienie tych wszystkich rzeczy, w sposób reprodukowalny i zapisany w możliwie odporny sposób.
 
 ### Projekt elementy podstawowe
 
@@ -63,6 +63,14 @@ Typowe błędy:
 
 Ctrl+Alt+ I = nowy segment kodu w Windowsie
 Cmd+Alt + I =   nowy segment kodu w Mac os
+```{r}
+
+```
+
+
+```{r}
+
+```
 
 Alt - = operator przypisania w Windows
 Opt - = operator przypisania w Mac os
@@ -249,6 +257,7 @@ class(moje_liczby)
 ```{r}
 podsumowanie <- summary(moje_liczby)
 class(podsumowanie)
+
 ```
 
 ```{r}
@@ -259,10 +268,14 @@ Operacje wykonywane na obiektach mogą skutkować zmianą ich klasy:
 
 ```{r}
 nowy_wektor <- c(moje_liczby, "jabłko")
+
+```
+
+```{r}
 class(nowy_wektor)
 ```
 
-Zbiory danych zaimportowane do  R też są obiektami. W R jest kilka typów obiektów służących do przechowywania danych ale najbadziej typowym jest ramka danych: data frame. Ramka danych to prostokątna tabela zlożona z wierszy (obserwacji) i kolumn (zmiennych). Kolumny w ramce danych mogą być różnej klasy.
+Zbiory danych zaimportowane do  R też są obiektami. W R jest kilka typów obiektów służących do przechowywania danych ale najbardziej typowym jest ramka danych: data frame. Ramka danych to prostokątna tabela zlożona z wierszy (obserwacji) i kolumn (zmiennych). Kolumny w ramce danych mogą być różnej klasy.
 
 ### Liczby
 
@@ -296,7 +309,7 @@ Two <- 2 #wielkie litery mają znaczenie
 ### Operatory 
 ```{r}
 
-logiczne <- two == Two # podwójny znak = oznacza w R równa się
+logiczne <- two == Two # podwójny znak = oznacza w R równa się pojedynczy znak = jest w R operatorem przydzielania oprator przypisania może być skierowany w prawo ->
 
 logiczne
 
@@ -314,9 +327,17 @@ nierówna_się
 Obiekt i operator przypisania. Zapisuje obiekt "data", zawierający dane
 gapminder
 
+
+
+
+```{r}
+library(gapminder)
+```
+
+
 ```{r}
 
-data <- (gapminder)
+data <- gapminder
 
 ```
 
@@ -475,7 +496,7 @@ Ramka danych (data frame) z dwóch wektorów:
 
 ```{r}
 
-ramka_danych <- data.frame(partie, sondaż)
+ramka_danych <- tibble(partie, sondaż)
 
 ```
 
@@ -688,11 +709,18 @@ read_tsv(
 )
 ```
 
+```{r}
+
+library(here)
+
+```
 
 
 ```{r}
-panteon <- read_csv(here::here("dane", "panteon_s.csv"))
+panteon <- read_csv(here("dane", "panteon_s.csv"))
 ```
+
+
 
 
 ```{r}
@@ -748,10 +776,10 @@ Problem ścieżek absolutnych i relatywnych
 
 ```{r}
 
-podatki <- read_excel(
-  "./dane/Chapter14TablesFigures.xlsx", #uwaga musimy być we właściwym katalogu roboczym, żeby ta linia kodu zadziałała
+podatki <- read_excel(here("dane", "Chapter14TablesFigures.xlsx"), #uwaga musimy być we właściwym katalogu roboczym, żeby ta linia kodu zadziałała
   sheet = "TS14.1", #wybieramy arkusz z pliku
-  skip = 3 # usuwamy trzy pierwsze wiersze
+  skip = 3,
+  n_max = 114# usuwamy trzy pierwsze wiersze
   )
 
 ```
@@ -838,13 +866,24 @@ setwd() # argumentem jest ścieżka dostępu do katalogu roboczego w cudzysłowi
 Jeśli nasz kod ma zadziałąć na dowolnym komputerze wczytując i zapisując pliki musimy stosować ścieżki relatywne
 
 ```{r}
-podatki_open <- openxlsx::read.xlsx("./dane/Chapter14TablesFigures.xlsx", #ścieżki relatywne
+podatki_open_2 <- openxlsx::read.xlsx(here::here("dane", "Chapter14TablesFigures.xlsx"), #ścieżki relatywne
                           sheet = "TS14.1",
                           startRow = 4,
                           rows = 1:118,
                           cols = 1:5) 
 ```
 
+
+```{r}
+glimpse(podatki_open_2)
+
+podatki_open_2$X1 <- as.numeric(podatki_open_2$X1)
+```
+
+
+```{r}
+liczby <- c(1:10)
+```
 
 
 ```{r}
@@ -965,6 +1004,18 @@ analogicznie funkcjami write*
 ```{r}
 ?write.table
 ```
+
+
+```{r}
+write_csv(podatki_open, here::here("dane", "podatki_lepsze.csv"))
+```
+
+```{r}
+podatki_nowe <- read_csv(here::here("dane", "podatki_lepsze.csv"))
+```
+
+
+
 
 
 ```{r eval = FALSE}

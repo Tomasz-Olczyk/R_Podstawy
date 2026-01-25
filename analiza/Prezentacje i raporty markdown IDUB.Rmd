@@ -1,7 +1,9 @@
 ---
 title: "Markdown i wizualizacja - podstawy"
-output: html_document
-editor_options: 
+output:
+  word_document: default
+  html_document: default
+editor_options:
   chunk_output_type: console
 ---
 
@@ -9,7 +11,8 @@ Poniższy segment kodu ustawia parametry globalnie dla wszystkich segmentów fun
 
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(warning = TRUE, echo = TRUE)
+knitr::opts_chunk$set(warning = TRUE, 
+                      echo = TRUE)
 ```
 
 
